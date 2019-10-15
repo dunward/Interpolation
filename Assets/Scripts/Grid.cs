@@ -61,37 +61,39 @@ public class Grid : MonoBehaviour
                 var x = Mathf.FloorToInt(i / size);
                 var y = Mathf.FloorToInt(k / size);
 
+                var rx = Mathf.RoundToInt(i / size);
+                var ry = Mathf.RoundToInt(k / size);
+
                 #region Edge Draw
-                if(Mathf.RoundToInt(i / size) == 0 || Mathf.RoundToInt(i / size) == 5)
+                if(rx == 0 || rx == 5)
                 {
-                    if(Mathf.RoundToInt(k / size) == 0 || Mathf.RoundToInt(k / size) == 5)
+                    if(ry == 0 || ry == 5)
                     {
                         texture.SetPixel(i, k, colorGradient.GetColor(pivot[y][x]));
                     }
                     else
                     {
-                        var yy = Mathf.RoundToInt(k / size);
-
-                        var l0 = Mathf.Lerp(pivot[yy - 1][x], pivot[yy][x], Mathf.InverseLerp(30 + 60 * (yy - 1), 30 + 60 * (yy), k));
-                        texture.SetPixel(i, k, colorGradient.GetColor(l0));
+                        var l = Mathf.Lerp(pivot[ry - 1][x], pivot[ry][x], Mathf.InverseLerp(30 + 60 * (ry - 1), 30 + 60 * (ry), k));
+                        texture.SetPixel(i, k, colorGradient.GetColor(l));
                     }
                     continue;
                 }
 
-                if(Mathf.RoundToInt(k / size) == 0 || Mathf.RoundToInt(k / size) == 5)
+                if(ry == 0 || ry == 5)
                 {
-                    if (Mathf.RoundToInt(i / size) != 0 && Mathf.RoundToInt(i / size) != 5)
+                    if (rx != 0 && rx != 5)
                     {
-                        var xx = Mathf.RoundToInt(i / size);
-
-                        var l0 = Mathf.Lerp(pivot[y][xx - 1], pivot[y][xx], Mathf.InverseLerp(30 + 60 * (xx - 1), 30 + 60 * (xx), i));
-                        texture.SetPixel(i, k, colorGradient.GetColor(l0));
+                        var l = Mathf.Lerp(pivot[y][rx - 1], pivot[y][rx], Mathf.InverseLerp(30 + 60 * (rx - 1), 30 + 60 * (rx), i));
+                        texture.SetPixel(i, k, colorGradient.GetColor(l));
                     }
                     continue;
                 }
                 #endregion
-
-
+                
+                var l0 = Mathf.Lerp(pivot[ry - 1][rx - 1], pivot[ry - 1][rx], Mathf.InverseLerp(30 + 60 * (rx - 1), 30 + 60 * (rx), i));
+                var l1 = Mathf.Lerp(pivot[ry][rx - 1], pivot[ry][rx], Mathf.InverseLerp(30 + 60 * (rx - 1), 30 + 60 * (rx), i));
+                var l2 = Mathf.Lerp(l0, l1, Mathf.InverseLerp(30 + 60 * (ry - 1), 30 + 60 * (ry), k));
+                texture.SetPixel(i, k, colorGradient.GetColor(l2));
             }
         }
     }

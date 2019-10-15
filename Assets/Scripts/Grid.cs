@@ -27,18 +27,21 @@ public class Grid : MonoBehaviour
         switch (type)
         {
             case InterpolationType.Nearest:
-                {
-                    for (int i = 0; i < width; i++)
-                    {
-                        for (int k = 0; k < height; k++)
-                        {
-                            texture.SetPixel(i, k, colorGradient.GetColor(pivot[Mathf.FloorToInt(k / size)][Mathf.FloorToInt(i / size)]));
-                        }
-                    }
-                }
+                Nearest(texture);
                 break;
         }
         texture.Apply();
         GetComponent<RawImage>().texture = texture;
+    }
+
+    private void Nearest(Texture2D texture)
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int k = 0; k < height; k++)
+            {
+                texture.SetPixel(i, k, colorGradient.GetColor(pivot[Mathf.FloorToInt(k / size)][Mathf.FloorToInt(i / size)]));
+            }
+        }
     }
 }

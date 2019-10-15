@@ -1,4 +1,3 @@
-# Interpolation
-Wikipedia Example with Unity
+# Interpo
 ![image](/Image/image.png)
 https://en.wikipedia.org/wiki/Multivariate_interpolation

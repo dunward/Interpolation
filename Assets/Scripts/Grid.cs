@@ -61,19 +61,37 @@ public class Grid : MonoBehaviour
                 var x = Mathf.FloorToInt(i / size);
                 var y = Mathf.FloorToInt(k / size);
 
-                try
+                #region Edge Draw
+                if(Mathf.RoundToInt(i / size) == 0 || Mathf.RoundToInt(i / size) == 5)
                 {
+                    if(Mathf.RoundToInt(k / size) == 0 || Mathf.RoundToInt(k / size) == 5)
+                    {
+                        texture.SetPixel(i, k, colorGradient.GetColor(pivot[y][x]));
+                    }
+                    else
+                    {
+                        var yy = Mathf.RoundToInt(k / size);
 
-                    var t0 = Mathf.Lerp(pivot[y][x], pivot[y][x + 1], dx);
-                    var t1 = Mathf.Lerp(pivot[y + 1][x], pivot[y + 1][x + 1], dx);
-
-                    var t2 = Mathf.Lerp(t0, t1, dy);
-                    texture.SetPixel(i, k, colorGradient.GetColor(t0));
+                        var l0 = Mathf.Lerp(pivot[yy - 1][x], pivot[yy][x], Mathf.InverseLerp(30 + 60 * (yy - 1), 30 + 60 * (yy), k));
+                        texture.SetPixel(i, k, colorGradient.GetColor(l0));
+                    }
+                    continue;
                 }
-                catch
+
+                if(Mathf.RoundToInt(k / size) == 0 || Mathf.RoundToInt(k / size) == 5)
                 {
+                    if (Mathf.RoundToInt(i / size) != 0 && Mathf.RoundToInt(i / size) != 5)
+                    {
+                        var xx = Mathf.RoundToInt(i / size);
 
+                        var l0 = Mathf.Lerp(pivot[y][xx - 1], pivot[y][xx], Mathf.InverseLerp(30 + 60 * (xx - 1), 30 + 60 * (xx), i));
+                        texture.SetPixel(i, k, colorGradient.GetColor(l0));
+                    }
+                    continue;
                 }
+                #endregion
+
+
             }
         }
     }

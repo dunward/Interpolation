@@ -116,30 +116,116 @@ public class Grid : MonoBehaviour
 
 
                 float l0, l1, l2, l3;
-                l0 = 0;
-                l1 = 0;
-                l2 = 0;
-                l3 = 0;
+                l0 = CubicInterpolation(
+                    pivot[(int)Mathf.Repeat(y - 1, pivot.Count)][(int)Mathf.Repeat(x - 1, pivot.Count)],
+                    pivot[y][(int)Mathf.Repeat(x - 1, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 1, pivot.Count)][(int)Mathf.Repeat(x - 1, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 2, pivot.Count)][(int)Mathf.Repeat(x - 1, pivot.Count)], dy);
+                l1 = CubicInterpolation(
+                    pivot[(int)Mathf.Repeat(y - 1, pivot.Count)][(int)Mathf.Repeat(x, pivot.Count)],
+                    pivot[y][(int)Mathf.Repeat(x, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 1, pivot.Count)][(int)Mathf.Repeat(x, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 2, pivot.Count)][(int)Mathf.Repeat(x, pivot.Count)], dy);
+                l2 = CubicInterpolation(
+                    pivot[(int)Mathf.Repeat(y - 1, pivot.Count)][(int)Mathf.Repeat(x + 1, pivot.Count)],
+                    pivot[y][(int)Mathf.Repeat(x + 1, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 1, pivot.Count)][(int)Mathf.Repeat(x + 1, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 2, pivot.Count)][(int)Mathf.Repeat(x + 1, pivot.Count)], dy);
+                l3 = CubicInterpolation(
+                    pivot[(int)Mathf.Repeat(y - 1, pivot.Count)][(int)Mathf.Repeat(x + 2, pivot.Count)],
+                    pivot[y][(int)Mathf.Repeat(x + 2, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 1, pivot.Count)][(int)Mathf.Repeat(x + 2, pivot.Count)],
+                    pivot[(int)Mathf.Repeat(y + 2, pivot.Count)][(int)Mathf.Repeat(x + 2, pivot.Count)], dy);
 
+                //l0 = CubicInterpolation(
+                //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                //    pivot[y][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)], dy);
+                //l1 = CubicInterpolation(
+                //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                //    pivot[y][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)], dy);
+                //l2 = CubicInterpolation(
+                //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                //    pivot[y][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)], dy);
+                //l3 = CubicInterpolation(
+                //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                //    pivot[y][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)], dy);
+
+                var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                texture.SetPixel(i, k, colorGradient.GetColor(t));
 
                 try
                 {
-                    if(x == 0)
-                    {
-                        l0 = CubicInterpolation(pivot[y][x], pivot[y + 1][x], pivot[y + 2][x], pivot[y + 3][x], dy);
-                        l1 = l0;
-                    }
-                    l0 = CubicInterpolation(pivot[y][x], pivot[y + 1][x], pivot[y + 2][x], pivot[y + 3][x], dy);
-                    l1 = CubicInterpolation(pivot[y][x + 1], pivot[y + 1][x + 1], pivot[y + 2][x + 1], pivot[y + 3][x + 1], dy);
-                    l2 = CubicInterpolation(pivot[y][x + 2], pivot[y + 1][x + 2], pivot[y + 2][x + 2], pivot[y + 3][x + 2], dy);
-                    l3 = CubicInterpolation(pivot[y][x + 3], pivot[y + 1][x + 3], pivot[y + 2][x + 3], pivot[y + 3][x + 3], dy);
+                    //float l0, l1, l2, l3;
+                    //l0 = CubicInterpolation(
+                    //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                    //    pivot[y][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)], dy);
+                    //l1 = CubicInterpolation(
+                    //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                    //    pivot[y][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)], dy);
+                    //l2 = CubicInterpolation(
+                    //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                    //    pivot[y][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)], dy);
+                    //l3 = CubicInterpolation(
+                    //    pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                    //    pivot[y][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
+                    //    pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)], dy);
+
+                    //var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                    //texture.SetPixel(i, k, colorGradient.GetColor(t));
+
+                    //if (x == 0 && y == 0)
+                    //{
+                    //    l0 = CubicInterpolation(pivot[0][0], pivot[1][0], pivot[2][0], pivot[3][0], dy);
+                    //    l1 = CubicInterpolation(pivot[0][1], pivot[1][1], pivot[2][1], pivot[3][1], dy);
+                    //    l2 = CubicInterpolation(pivot[0][2], pivot[1][2], pivot[2][2], pivot[3][2], dy);
+                    //    l3 = CubicInterpolation(pivot[0][3], pivot[1][3], pivot[2][3], pivot[3][3], dy);
+                    //    var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                    //    texture.SetPixel(i, k, colorGradient.GetColor(t));
+                    //}
+                    //if (x == 1 && y == 0)
+                    //{
+                    //    l0 = CubicInterpolation(pivot[0][0], pivot[1][0], pivot[2][0], pivot[3][0], dy);
+                    //    l1 = CubicInterpolation(pivot[0][1], pivot[1][1], pivot[2][1], pivot[3][1], dy);
+                    //    l2 = CubicInterpolation(pivot[0][2], pivot[1][2], pivot[2][2], pivot[3][2], dy);
+                    //    l3 = CubicInterpolation(pivot[0][3], pivot[1][3], pivot[2][3], pivot[3][3], dy);
+                    //    var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                    //    texture.SetPixel(i, k, colorGradient.GetColor(t));
+                    //}
+                    //if (x == 2 && y == 0)
+                    //{
+                    //    l0 = CubicInterpolation(pivot[0][2], pivot[1][2], pivot[2][2], pivot[3][2], dy);
+                    //    l1 = CubicInterpolation(pivot[0][3], pivot[1][2], pivot[2][2], pivot[3][2], dy);
+                    //    l2 = CubicInterpolation(pivot[0][4], pivot[1][3], pivot[2][3], pivot[3][3], dy);
+                    //    l3 = CubicInterpolation(pivot[0][4], pivot[1][4], pivot[2][4], pivot[3][4], dy);
+                    //    var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                    //    texture.SetPixel(i, k, colorGradient.GetColor(t));
+                    //}
+                    //l0 = CubicInterpolation(pivot[y][x - 1], pivot[y + 1][x - 1], pivot[y + 2][x - 1], pivot[y + 3][x - 1], dy);
+                    //l1 = CubicInterpolation(pivot[y][x], pivot[y + 1][x], pivot[y + 2][x], pivot[y + 3][x], dy);
+                    //l2 = CubicInterpolation(pivot[y][x + 1], pivot[y + 1][x + 1], pivot[y + 2][x + 1], pivot[y + 3][x + 1], dy);
+                    //l3 = CubicInterpolation(pivot[y][x + 2], pivot[y + 1][x + 2], pivot[y + 2][x + 2], pivot[y + 3][x + 2], dy);
+                    //var t = CubicInterpolation(l0, l1, l2, l3, dx);
+                    //texture.SetPixel(i, k, colorGradient.GetColor(t));
                 }
                 catch
                 {
 
                 }
-                    var t = CubicInterpolation(l0, l1, l2, l3, dx);
-                    texture.SetPixel(i, k, colorGradient.GetColor(t));
             }
         }
     }

@@ -124,25 +124,25 @@ namespace Interpolation
                     float l0, l1, l2, l3;
 
                     l0 = CubicInterpolation(
-                        pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
-                        pivot[y][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x - 1, 0, pivot.Count - 1)], dy);
+                        ClampPivot(y - 1, x - 1),
+                        ClampPivot(y, x - 1),
+                        ClampPivot(y + 1, x - 1),
+                        ClampPivot(y + 2, x - 1), dy);
                     l1 = CubicInterpolation(
-                        pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
-                        pivot[y][Mathf.Clamp(x, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)], dy);
+                        ClampPivot(y - 1, x),
+                        ClampPivot(y, x),
+                        ClampPivot(y + 1, x),
+                        ClampPivot(y + 2, x), dy);
                     l2 = CubicInterpolation(
-                        pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
-                        pivot[y][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 1, 0, pivot.Count - 1)], dy);
+                        ClampPivot(y - 1, x + 1),
+                        ClampPivot(y, x + 1),
+                        ClampPivot(y + 1, x + 1),
+                        ClampPivot(y + 2, x + 1), dy);
                     l3 = CubicInterpolation(
-                        pivot[Mathf.Clamp(y - 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
-                        pivot[y][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 1, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)],
-                        pivot[Mathf.Clamp(y + 2, 0, pivot.Count - 1)][Mathf.Clamp(x + 2, 0, pivot.Count - 1)], dy);
+                        ClampPivot(y - 1, x + 2),
+                        ClampPivot(y, x + 2),
+                        ClampPivot(y + 1, x + 2),
+                        ClampPivot(y + 2, x + 2), dy);
 
                     var t = CubicInterpolation(l0, l1, l2, l3, dx);
                     temp.SetPixel(i, k, colorGradient.GetColor(t));
@@ -161,6 +161,11 @@ namespace Interpolation
             float a2 = -0.5f * p0 + 0.5f * p2;
             float a3 = p1;
             return a0 * t * t * t + a1 * t * t + a2 * t + a3;
+        }
+
+        private float ClampPivot(int x, int y)
+        {
+            return pivot[Mathf.Clamp(y, 0, pivot.Count - 1)][Mathf.Clamp(x, 0, pivot.Count - 1)];
         }
     }
 }
